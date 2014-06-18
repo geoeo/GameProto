@@ -14,6 +14,7 @@
 		364CF8971951E882009D1CBA /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 364CF8951951E882009D1CBA /* Main.storyboard */; };
 		364CF8991951E882009D1CBA /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 364CF8981951E882009D1CBA /* Images.xcassets */; };
 		364CF8A51951E882009D1CBA /* GameProtoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 364CF8A41951E882009D1CBA /* GameProtoTests.swift */; };
+		364CF8B21951E8E0009D1CBA /* Player.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 364CF8B11951E8E0009D1CBA /* Player.atlas */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -38,6 +39,7 @@
 		364CF89E1951E882009D1CBA /* GameProtoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GameProtoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		364CF8A31951E882009D1CBA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		364CF8A41951E882009D1CBA /* GameProtoTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameProtoTests.swift; sourceTree = "<group>"; };
+		364CF8B11951E8E0009D1CBA /* Player.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = Player.atlas; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -64,6 +66,7 @@
 				364CF88A1951E882009D1CBA /* GameProto */,
 				364CF8A11951E882009D1CBA /* GameProtoTests */,
 				364CF8891951E882009D1CBA /* Products */,
+				364CF8B01951E8E0009D1CBA /* Assets */,
 			);
 			sourceTree = "<group>";
 		};
@@ -113,6 +116,14 @@
 				364CF8A31951E882009D1CBA /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		364CF8B01951E8E0009D1CBA /* Assets */ = {
+			isa = PBXGroup;
+			children = (
+				364CF8B11951E8E0009D1CBA /* Player.atlas */,
+			);
+			path = Assets;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -195,6 +206,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				364CF8B21951E8E0009D1CBA /* Player.atlas in Resources */,
 				364CF8991951E882009D1CBA /* Images.xcassets in Resources */,
 				364CF8901951E882009D1CBA /* GameScene.sks in Resources */,
 				364CF8971951E882009D1CBA /* Main.storyboard in Resources */,
