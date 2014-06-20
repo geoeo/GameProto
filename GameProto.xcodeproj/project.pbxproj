@@ -14,7 +14,8 @@
 		364CF8971951E882009D1CBA /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 364CF8951951E882009D1CBA /* Main.storyboard */; };
 		364CF8991951E882009D1CBA /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 364CF8981951E882009D1CBA /* Images.xcassets */; };
 		364CF8A51951E882009D1CBA /* GameProtoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 364CF8A41951E882009D1CBA /* GameProtoTests.swift */; };
-		364CF8B21951E8E0009D1CBA /* Player.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 364CF8B11951E8E0009D1CBA /* Player.atlas */; };
+		36B988A81953A33700466D63 /* player.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 36B988A71953A33700466D63 /* player.atlas */; };
+		36F2F2A51953B1EE007E074A /* landscape.png in Resources */ = {isa = PBXBuildFile; fileRef = 36F2F2A41953B1EE007E074A /* landscape.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -39,7 +40,8 @@
 		364CF89E1951E882009D1CBA /* GameProtoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GameProtoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		364CF8A31951E882009D1CBA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		364CF8A41951E882009D1CBA /* GameProtoTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameProtoTests.swift; sourceTree = "<group>"; };
-		364CF8B11951E8E0009D1CBA /* Player.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = Player.atlas; sourceTree = "<group>"; };
+		36B988A71953A33700466D63 /* player.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = player.atlas; sourceTree = "<group>"; };
+		36F2F2A41953B1EE007E074A /* landscape.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = landscape.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -82,6 +84,7 @@
 		364CF88A1951E882009D1CBA /* GameProto */ = {
 			isa = PBXGroup;
 			children = (
+				36B988A91953A79600466D63 /* iPad */,
 				364CF88D1951E882009D1CBA /* AppDelegate.swift */,
 				364CF88F1951E882009D1CBA /* GameScene.sks */,
 				364CF8911951E882009D1CBA /* GameScene.swift */,
@@ -121,9 +124,17 @@
 		364CF8B01951E8E0009D1CBA /* Assets */ = {
 			isa = PBXGroup;
 			children = (
-				364CF8B11951E8E0009D1CBA /* Player.atlas */,
+				36F2F2A41953B1EE007E074A /* landscape.png */,
+				36B988A71953A33700466D63 /* player.atlas */,
 			);
 			path = Assets;
+			sourceTree = "<group>";
+		};
+		36B988A91953A79600466D63 /* iPad */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = iPad;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -207,10 +218,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				364CF8B21951E8E0009D1CBA /* Player.atlas in Resources */,
+				36B988A81953A33700466D63 /* player.atlas in Resources */,
 				364CF8991951E882009D1CBA /* Images.xcassets in Resources */,
 				364CF8901951E882009D1CBA /* GameScene.sks in Resources */,
 				364CF8971951E882009D1CBA /* Main.storyboard in Resources */,
+				36F2F2A51953B1EE007E074A /* landscape.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -349,9 +361,11 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = GameProto/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -363,9 +377,11 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = GameProto/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

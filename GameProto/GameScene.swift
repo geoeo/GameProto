@@ -10,25 +10,56 @@ import SpriteKit
 
 class GameScene: SKScene {
   
+  
+  // contains background components
+  let _bgLayer: SKNode = SKNode()
+  // contains components used in gameplay
+  let _actionLayer: SKNode = SKNode()
+  
+  var playerNode: SKSpriteNode?
+  let playerMoves: SKTexture?[] = Array<SKTexture?>(count: 3, repeatedValue: nil)
+  
     override func didMoveToView(view: SKView) {
+      
         /* Setup your scene here */
-      
-      let _bgLayer: SKSpriteNode = SKSpriteNode()
       self.addChild(_bgLayer)
-      
-      let bgTexture: SKTexture? = SKTexture(imageNamed: "Landscape")
+      self.addChild(_actionLayer)
+    
+      let bgTexture: SKTexture? = SKTexture(imageNamed: "landscape")
       
       if let actualTexture = bgTexture {
         actualTexture.filteringMode = SKTextureFilteringMode.Nearest
       }
 
-      
       let bgNode: SKSpriteNode = SKSpriteNode(texture: bgTexture)
       bgNode.name = "landscape"
       bgNode.anchorPoint = CGPointZero
-      bgNode.position = CGPointZero
+      bgNode.position = CGPointMake(0, 90) // why is (0,0) not bottom left in view frame?
+      
       _bgLayer.addChild(bgNode)
       
+      let playerTextureAtlas: SKTextureAtlas? = SKTextureAtlas(named: "player")
+      
+      for(var i = 0; i < playerMoves.count; ++i){
+        
+        if let actualTextureAtlas = playerTextureAtlas {
+          playerMoves[i] = actualTextureAtlas.textureNamed("player-0\(i+1)")
+        } else {
+          println("texture atlas could not be loaded")
+        }
+        
+      }
+      
+      if let playerTexture = playerMoves[1] {
+              playerNode = SKSpriteNode(texture: playerTexture)
+      }
+      
+      playerNode!.name = "player"
+      playerNode!.position = CGPointMake(50,160)
+      
+      _actionLayer.addChild(playerNode)
+      
+      println("didMoveToView - complete")
       
     }
     

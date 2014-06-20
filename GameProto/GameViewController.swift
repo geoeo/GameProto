@@ -9,7 +9,7 @@
 import UIKit
 import SpriteKit
 
-extension SKNode {
+extension GameScene {
     class func unarchiveFromFile(file : NSString) -> SKNode? {
         
         let path = NSBundle.mainBundle().pathForResource(file, ofType: "sks")
@@ -25,7 +25,7 @@ extension SKNode {
 }
 
 class GameViewController: UIViewController {
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
