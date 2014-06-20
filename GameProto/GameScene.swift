@@ -17,7 +17,9 @@ class GameScene: SKScene {
   let _actionLayer: SKNode = SKNode()
   
   var playerNode: SKSpriteNode?
+  var bossNode:SKSpriteNode?
   let playerMoves: SKTexture?[] = Array<SKTexture?>(count: 3, repeatedValue: nil)
+  let bossMoves: SKTexture?[] = Array<SKTexture?>(count: 3, repeatedValue: nil)
   
     override func didMoveToView(view: SKView) {
       
@@ -37,38 +39,43 @@ class GameScene: SKScene {
       bgNode.position = CGPointMake(0, 90) // why is (0,0) not bottom left in view frame?
       
       _bgLayer.addChild(bgNode)
-      
-      let playerTextureAtlas: SKTextureAtlas? = SKTextureAtlas(named: "player")
-      
-      for(var i = 0; i < playerMoves.count; ++i){
-        
-        if let actualTextureAtlas = playerTextureAtlas {
-          playerMoves[i] = actualTextureAtlas.textureNamed("player-0\(i+1)")
-        } else {
-          println("texture atlas could not be loaded")
-        }
-        
-      }
+    
+      loadTextureAtlasInto(playerMoves,withEntityName: "player")
+      loadTextureAtlasInto(bossMoves,withEntityName: "boss")
       
       if let playerTexture = playerMoves[1] {
-              playerNode = SKSpriteNode(texture: playerTexture)
+        playerNode = SKSpriteNode(texture: playerTexture)
+        playerNode!.name = "player"
+        playerNode!.position = CGPointMake(50,160)
+        _actionLayer.addChild(playerNode)
       }
       
-      playerNode!.name = "player"
-      playerNode!.position = CGPointMake(50,160)
-      
-      _actionLayer.addChild(playerNode)
+      if let bossTexture = bossMoves[0]{
+        bossNode = SKSpriteNode(texture:bossTexture)
+        bossNode!.name = "boss"
+        bossNode!.position = CGPointMake(600, 160)
+        _actionLayer.addChild(bossNode)
+      }
       
       println("didMoveToView - complete")
-      
-    }
     
+  }
+  
+    func loadTextureAtlasInto(destinationList: Array<SKTexture?>,withEntityName: String){
+      
+      let textureAtlas: SKTextureAtlas? = SKTextureAtlas(named: withEntityName)
+      
+      for(var i = 0; i < destinationList.count; ++i){
+        destinationList[i] = textureAtlas?.textureNamed("\(withEntityName)-0\(i+1)")
+      }
+    }
+
     override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
         /* Called when a touch begins */
         
-//        for touch: AnyObject in touches {
-//            let location = touch.locationInNode(self)
-//            
+        for touch: AnyObject in touches {
+            let location = touch.locationInNode(self)
+//
 //            let sprite = SKSpriteNode(imageNamed:"Spaceship")
 //            
 //            sprite.xScale = 0.5
@@ -80,7 +87,7 @@ class GameScene: SKScene {
 //            sprite.runAction(SKAction.repeatActionForever(action))
 //            
 //            self.addChild(sprite)
-//        }
+        }
     }
    
     override func update(currentTime: CFTimeInterval) {
