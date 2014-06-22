@@ -24,12 +24,13 @@ class GameScene: SKScene {
     override func didMoveToView(view: SKView) {
       
         /* Setup your scene here */
+      self.physicsBody = SKPhysicsBody(edgeLoopFromRect: self.frame)
       self.addChild(_bgLayer)
       self.addChild(_actionLayer)
       
-      let swipeUpGesture = UISwipeGestureRecognizer(target: self, action: "respondToSwipeUpGesture:")
-      swipeUpGesture.direction = UISwipeGestureRecognizerDirection.Up
-      self.view.addGestureRecognizer(swipeUpGesture)
+      let swipeGesture = UISwipeGestureRecognizer(target: self, action: "respondToSwipeGesture:")
+      swipeGesture.direction = UISwipeGestureRecognizerDirection.Up
+      self.view.addGestureRecognizer(swipeGesture)
     
       let bgTexture: SKTexture? = SKTexture(imageNamed: "landscape")
       
@@ -50,7 +51,8 @@ class GameScene: SKScene {
       if let playerTexture = playerMoves[1] {
         playerNode = SKSpriteNode(texture: playerTexture)
         playerNode!.name = "player"
-        playerNode!.position = CGPointMake(50,160)
+        playerNode!.position = CGPointMake(50,500)
+        playerNode!.physicsBody = SKPhysicsBody(circleOfRadius: 2)
         _actionLayer.addChild(playerNode)
       } else {
         println("Player node could not be created")
@@ -126,7 +128,7 @@ class GameScene: SKScene {
         /* Called before each frame is rendered */
     }
   
-  func respondToSwipeUpGesture(gesture: UIGestureRecognizer){
+  func respondToSwipeGesture(gesture: UIGestureRecognizer){
     
     if let swipeGesture = gesture as? UISwipeGestureRecognizer {
       
@@ -134,6 +136,7 @@ class GameScene: SKScene {
         
       case UISwipeGestureRecognizerDirection.Up:
         println("Swipe Up")
+        playerNode?.physicsBody.applyForce(CGVectorMake(0, 20))
         
       default:
         break
