@@ -10,11 +10,11 @@ import SpriteKit
 
 class GameScene: SKScene {
   
-  
   // contains background components
   let _bgLayer: SKNode = SKNode()
   // contains components used in gameplay
   let _actionLayer: SKNode = SKNode()
+  let actionDuration: NSTimeInterval = 2.0
   
   var playerNode: SKSpriteNode?
   var bossNode:SKSpriteNode?
@@ -26,6 +26,10 @@ class GameScene: SKScene {
         /* Setup your scene here */
       self.addChild(_bgLayer)
       self.addChild(_actionLayer)
+      
+      let swipeUpGesture = UISwipeGestureRecognizer(target: self, action: "respondToSwipeUpGesture:")
+      swipeUpGesture.direction = UISwipeGestureRecognizerDirection.Up
+      self.view.addGestureRecognizer(swipeUpGesture)
     
       let bgTexture: SKTexture? = SKTexture(imageNamed: "landscape")
       
@@ -48,6 +52,8 @@ class GameScene: SKScene {
         playerNode!.name = "player"
         playerNode!.position = CGPointMake(50,160)
         _actionLayer.addChild(playerNode)
+      } else {
+        println("Player node could not be created")
       }
       
       if let bossTexture = bossMoves[0]{
@@ -55,6 +61,8 @@ class GameScene: SKScene {
         bossNode!.name = "boss"
         bossNode!.position = CGPointMake(600, 160)
         _actionLayer.addChild(bossNode)
+      } else {
+          println("Boss node could not be created")
       }
       
       println("didMoveToView - complete")
@@ -69,28 +77,70 @@ class GameScene: SKScene {
         destinationList[i] = textureAtlas?.textureNamed("\(withEntityName)-0\(i+1)")
       }
     }
+  
+  //TODO Make movement speed constant
+  //TODO test movement with rotation actions
+  func goTo(newLocation: CGPoint) {
+    
+      println(newLocation)
+    
+      let movePlayerAlongXPlane: SKAction = SKAction.moveToX(newLocation.x, duration: actionDuration)
+      let setIdleTexture: SKAction = SKAction.setTexture(playerMoves[1])
+      var swapTexture: SKAction? = nil
+   
+      if (newLocation.x < playerNode?.position.x) {
+        // go left
+        swapTexture = SKAction.setTexture(playerMoves[0])
+        println("go Left")
+        
+      } else {
+        // go right
+        swapTexture = SKAction.setTexture(playerMoves[2])
+        println("go Right")
+      }
+    
+    if let textureAction = swapTexture{
+      let sequence = SKAction.sequence([textureAction,movePlayerAlongXPlane,setIdleTexture])
+      playerNode?.runAction(sequence)
+    } else {
+      println("error in new location action")
+    }
+
+    
+
+  }
 
     override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
         /* Called when a touch begins */
         
         for touch: AnyObject in touches {
             let location = touch.locationInNode(self)
-//
-//            let sprite = SKSpriteNode(imageNamed:"Spaceship")
-//            
-//            sprite.xScale = 0.5
-//            sprite.yScale = 0.5
-//            sprite.position = location
-//            
-//            let action = SKAction.rotateByAngle(CGFloat(M_PI), duration:1)
-//            
-//            sprite.runAction(SKAction.repeatActionForever(action))
-//            
-//            self.addChild(sprite)
+          
+            goTo(location)
+          
+
         }
     }
    
     override func update(currentTime: CFTimeInterval) {
         /* Called before each frame is rendered */
     }
+  
+  func respondToSwipeUpGesture(gesture: UIGestureRecognizer){
+    
+    if let swipeGesture = gesture as? UISwipeGestureRecognizer {
+      
+      switch swipeGesture.direction {
+        
+      case UISwipeGestureRecognizerDirection.Up:
+        println("Swipe Up")
+        
+      default:
+        break
+        
+      }
+      
+    }
+    
+  }
 }
