@@ -23,6 +23,8 @@ class GameScene: SKScene {
   
     override func didMoveToView(view: SKView) {
       
+      println("width: \(self.frame.width) height: \(self.frame.height)")
+      
         /* Setup your scene here */
       self.physicsBody = SKPhysicsBody(edgeLoopFromRect: self.frame)
       self.addChild(_bgLayer)
@@ -41,18 +43,21 @@ class GameScene: SKScene {
       let bgNode: SKSpriteNode = SKSpriteNode(texture: bgTexture)
       bgNode.name = "landscape"
       bgNode.anchorPoint = CGPointZero
-      bgNode.position = CGPointMake(0, 90) // why is (0,0) not bottom left in view frame?
+      bgNode.position = CGPointZero
       
       _bgLayer.addChild(bgNode)
     
       loadTextureAtlasInto(playerMoves,withEntityName: "player")
       loadTextureAtlasInto(bossMoves,withEntityName: "boss")
       
+      //TODO replace physics body with better approximation i.e. set of vertecies
       if let playerTexture = playerMoves[1] {
         playerNode = SKSpriteNode(texture: playerTexture)
         playerNode!.name = "player"
-        playerNode!.position = CGPointMake(50,500)
-        playerNode!.physicsBody = SKPhysicsBody(circleOfRadius: 2)
+        playerNode!.position = CGPointMake(10,50)
+        println(playerTexture.size().width)
+        playerNode!.physicsBody
+          = SKPhysicsBody(rectangleOfSize: CGSizeMake(playerTexture.size().width, playerTexture.size().height))
         _actionLayer.addChild(playerNode)
       } else {
         println("Player node could not be created")
@@ -61,7 +66,9 @@ class GameScene: SKScene {
       if let bossTexture = bossMoves[0]{
         bossNode = SKSpriteNode(texture:bossTexture)
         bossNode!.name = "boss"
-        bossNode!.position = CGPointMake(600, 160)
+        bossNode!.position = CGPointMake(400, 200)
+        bossNode!.physicsBody
+          = SKPhysicsBody(rectangleOfSize: CGSizeMake(bossTexture.size().width, bossTexture.size().height))
         _actionLayer.addChild(bossNode)
       } else {
           println("Boss node could not be created")
@@ -136,7 +143,7 @@ class GameScene: SKScene {
         
       case UISwipeGestureRecognizerDirection.Up:
         println("Swipe Up")
-        playerNode?.physicsBody.applyForce(CGVectorMake(0, 20))
+        playerNode?.physicsBody.applyForce(CGVectorMake(0, 7000))
         
       default:
         break
