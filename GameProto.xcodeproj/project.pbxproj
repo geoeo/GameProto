@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		362DE4E0195A1CAD00EC0440 /* CustomPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 362DE4DF195A1CAD00EC0440 /* CustomPlayer.swift */; };
+		362DE4E1195A1CAD00EC0440 /* CustomPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 362DE4DF195A1CAD00EC0440 /* CustomPlayer.swift */; };
 		364CF88E1951E882009D1CBA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 364CF88D1951E882009D1CBA /* AppDelegate.swift */; };
 		364CF8901951E882009D1CBA /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 364CF88F1951E882009D1CBA /* GameScene.sks */; };
 		364CF8921951E882009D1CBA /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 364CF8911951E882009D1CBA /* GameScene.swift */; };
@@ -30,6 +32,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		362DE4DF195A1CAD00EC0440 /* CustomPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CustomPlayer.swift; path = ../../../../../Documents/CustomPlayer.swift; sourceTree = "<group>"; };
 		364CF8881951E882009D1CBA /* GameProto.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GameProto.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		364CF88C1951E882009D1CBA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		364CF88D1951E882009D1CBA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -64,6 +67,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		362DE4DC195A1C7700EC0440 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				362DE4DF195A1CAD00EC0440 /* CustomPlayer.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
 		364CF87F1951E882009D1CBA = {
 			isa = PBXGroup;
 			children = (
@@ -86,6 +97,7 @@
 		364CF88A1951E882009D1CBA /* GameProto */ = {
 			isa = PBXGroup;
 			children = (
+				362DE4DC195A1C7700EC0440 /* Model */,
 				36B988A91953A79600466D63 /* iPad */,
 				364CF88D1951E882009D1CBA /* AppDelegate.swift */,
 				364CF88F1951E882009D1CBA /* GameScene.sks */,
@@ -245,6 +257,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				364CF8921951E882009D1CBA /* GameScene.swift in Sources */,
+				362DE4E0195A1CAD00EC0440 /* CustomPlayer.swift in Sources */,
 				364CF8941951E882009D1CBA /* GameViewController.swift in Sources */,
 				364CF88E1951E882009D1CBA /* AppDelegate.swift in Sources */,
 			);
@@ -255,6 +268,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				364CF8A51951E882009D1CBA /* GameProtoTests.swift in Sources */,
+				362DE4E1195A1CAD00EC0440 /* CustomPlayer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

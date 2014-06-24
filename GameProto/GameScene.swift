@@ -8,15 +8,20 @@
 
 import SpriteKit
 
-class GameScene: SKScene {
+class GameScene: SKScene, SKPhysicsContactDelegate {
   
   // contains background components
   let _bgLayer: SKNode = SKNode()
   // contains components used in gameplay
   let _actionLayer: SKNode = SKNode()
+  
   let actionDuration: NSTimeInterval = 2.0
   
-  var playerNode: SKSpriteNode?
+  let playerCategory: UInt32 = 1
+  let worldCategory: UInt32 = 1 << 1
+  let bossCategory: UInt32 = 1 << 2
+  
+  var playerNode: CustomPlayer?
   var bossNode:SKSpriteNode?
   let playerMoves: SKTexture?[] = Array<SKTexture?>(count: 3, repeatedValue: nil)
   let bossMoves: SKTexture?[] = Array<SKTexture?>(count: 3, repeatedValue: nil)
@@ -27,6 +32,10 @@ class GameScene: SKScene {
       
         /* Setup your scene here */
       self.physicsBody = SKPhysicsBody(edgeLoopFromRect: self.frame)
+      self.physicsBody.categoryBitMask = worldCategory
+      self.physicsBody.contactTestBitMask = playerCategory
+      self.physicsWorld.contactDelegate = self
+      
       self.addChild(_bgLayer)
       self.addChild(_actionLayer)
       
@@ -50,14 +59,30 @@ class GameScene: SKScene {
       loadTextureAtlasInto(playerMoves,withEntityName: "player")
       loadTextureAtlasInto(bossMoves,withEntityName: "boss")
       
-      //TODO replace physics body with better approximation i.e. set of vertecies
       if let playerTexture = playerMoves[1] {
-        playerNode = SKSpriteNode(texture: playerTexture)
+        playerNode = CustomPlayer(texture: playerTexture)
         playerNode!.name = "player"
-        playerNode!.position = CGPointMake(10,50)
-        println(playerTexture.size().width)
+        playerNode!.position = CGPointMake(50,50)
+        
+        let playerHeight = playerNode!.size.height
+        let playerWidth = playerNode!.size.width
+        
+        let verteciesOfPlayer = CGPathCreateMutable()
+        CGPathMoveToPoint(verteciesOfPlayer, nil, 0, playerHeight/2)
+        
+        CGPathAddLineToPoint(verteciesOfPlayer, nil, playerWidth/2, playerHeight/3)
+        CGPathAddLineToPoint(verteciesOfPlayer, nil, playerWidth/2, -playerHeight/3)
+        CGPathAddLineToPoint(verteciesOfPlayer, nil, 0, -playerHeight/2)
+
+        CGPathAddLineToPoint(verteciesOfPlayer, nil, -playerWidth/2, -playerHeight/3)
+        CGPathAddLineToPoint(verteciesOfPlayer, nil, -playerWidth/2, playerHeight/3)
+        
         playerNode!.physicsBody
-          = SKPhysicsBody(rectangleOfSize: CGSizeMake(playerTexture.size().width, playerTexture.size().height))
+          = SKPhysicsBody(polygonFromPath: verteciesOfPlayer)
+        
+        playerNode!.physicsBody.categoryBitMask = playerCategory
+        playerNode!.physicsBody.collisionBitMask = worldCategory | bossCategory
+        
         _actionLayer.addChild(playerNode)
       } else {
         println("Player node could not be created")
@@ -69,6 +94,8 @@ class GameScene: SKScene {
         bossNode!.position = CGPointMake(400, 200)
         bossNode!.physicsBody
           = SKPhysicsBody(rectangleOfSize: CGSizeMake(bossTexture.size().width, bossTexture.size().height))
+        bossNode!.physicsBody.categoryBitMask = bossCategory
+        bossNode!.physicsBody.contactTestBitMask = playerCategory
         _actionLayer.addChild(bossNode)
       } else {
           println("Boss node could not be created")
@@ -130,9 +157,12 @@ class GameScene: SKScene {
 
         }
     }
-   
+  
+  //TODO stabilize player if jumping
     override func update(currentTime: CFTimeInterval) {
         /* Called before each frame is rendered */
+      
+      
     }
   
   func respondToSwipeGesture(gesture: UIGestureRecognizer){
@@ -143,7 +173,10 @@ class GameScene: SKScene {
         
       case UISwipeGestureRecognizerDirection.Up:
         println("Swipe Up")
-        playerNode?.physicsBody.applyForce(CGVectorMake(0, 7000))
+        playerNode?.physicsBody.applyImpulse(CGVectorMake(0, 200))
+        if let player = playerNode {
+          player.isJumping = true;
+        }
         
       default:
         break
@@ -151,6 +184,14 @@ class GameScene: SKScene {
       }
       
     }
-    
   }
+  
+  func didBeginContact(contact: SKPhysicsContact) {
+    if playerNode!.isJumping {
+      if ( contact.bodyA.categoryBitMask & worldCategory ) == worldCategory {
+        playerNode!.isJumping = false
+      }
+    }
+  }
+  
 }
