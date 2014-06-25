@@ -15,7 +15,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
   // contains components used in gameplay
   let _actionLayer: SKNode = SKNode()
   
-  let actionDuration: NSTimeInterval = 2.0
+  let rotationDuration: NSTimeInterval = 0.5
+  let movementDuration: NSTimeInterval = 2
   
   let playerCategory: UInt32 = 1
   let worldCategory: UInt32 = 1 << 1
@@ -62,7 +63,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
       if let playerTexture = playerMoves[1] {
         playerNode = CustomPlayer(texture: playerTexture)
         playerNode!.name = "player"
-        playerNode!.position = CGPointMake(50,50)
+        playerNode!.position = CGPointMake(100,50)
         
         let playerHeight = playerNode!.size.height
         let playerWidth = playerNode!.size.width
@@ -79,6 +80,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         playerNode!.physicsBody
           = SKPhysicsBody(polygonFromPath: verteciesOfPlayer)
+        playerNode!.physicsBody.allowsRotation = false
         
         playerNode!.physicsBody.categoryBitMask = playerCategory
         playerNode!.physicsBody.collisionBitMask = worldCategory | bossCategory
@@ -120,23 +122,28 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
       println(newLocation)
     
-      let movePlayerAlongXPlane: SKAction = SKAction.moveToX(newLocation.x, duration: actionDuration)
-      let setIdleTexture: SKAction = SKAction.setTexture(playerMoves[1])
+      let movePlayerAlongXPlane: SKAction = SKAction.moveToX(newLocation.x, duration: movementDuration)
+//      let setIdleTexture: SKAction = SKAction.setTexture(playerMoves[1])
+      let rotatePlayerBack: SKAction = SKAction.rotateToAngle(0, duration: rotationDuration)
+    
       var swapTexture: SKAction? = nil
+      var rotatePlayer: SKAction? = nil
    
       if (newLocation.x < playerNode?.position.x) {
         // go left
-        swapTexture = SKAction.setTexture(playerMoves[0])
+//        swapTexture = SKAction.setTexture(playerMoves[0])
+        rotatePlayer = SKAction.rotateByAngle(playerNode!.angleOfRotation, duration: rotationDuration)
         println("go Left")
         
       } else {
         // go right
-        swapTexture = SKAction.setTexture(playerMoves[2])
+//        swapTexture = SKAction.setTexture(playerMoves[2])
+        rotatePlayer = SKAction.rotateByAngle(-playerNode!.angleOfRotation, duration: rotationDuration)
         println("go Right")
       }
     
-    if let textureAction = swapTexture{
-      let sequence = SKAction.sequence([textureAction,movePlayerAlongXPlane,setIdleTexture])
+    if let movementAction = rotatePlayer {
+      let sequence = SKAction.sequence([movementAction,movePlayerAlongXPlane,rotatePlayerBack])
       playerNode?.runAction(sequence)
     } else {
       println("error in new location action")
@@ -158,12 +165,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
     }
   
-  //TODO stabilize player if jumping
     override func update(currentTime: CFTimeInterval) {
         /* Called before each frame is rendered */
-//      if(playerNode!.isJumping){
-//          playerNode!.stabilize(self.frame.size)
-//      }
+
+      
     
         
       
@@ -199,5 +204,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
       }
     }
   }
+
+
   
 }

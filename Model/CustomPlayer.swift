@@ -8,7 +8,9 @@
 
 import Spritekit
 
-class CustomPlayer : SKSpriteNode {
+class CustomPlayer: SKSpriteNode {
+
+  let angleOfRotation: CGFloat = 30 * (CGFloat(M_PI) / 180)
   
   var isJumping: Bool {
   
@@ -18,20 +20,28 @@ class CustomPlayer : SKSpriteNode {
   
   }
   
+  enum Direction {case Left,Right,Neutral}
+  
+  var orentation: Direction {
+  
+    willSet(newDirection) {
+//      println("orentation: \(orentation)")
+    }
+  
+  }
+  
   init(texture: SKTexture!) {
     isJumping = false
+    orentation = Direction.Neutral
     super.init(texture: texture)
   }
   
   init(texture: SKTexture!, color: UIColor!, size: CGSize) {
     isJumping = false
+    orentation = Direction.Neutral
     super.init(texture: texture, color: color, size: size)
   }
   
-  func stabilize(frameSize: CGSize) {
-    
-    
-  }
   
   
 }
