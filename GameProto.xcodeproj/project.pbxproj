@@ -7,8 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		362DE4E0195A1CAD00EC0440 /* CustomPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 362DE4DF195A1CAD00EC0440 /* CustomPlayer.swift */; };
-		362DE4E1195A1CAD00EC0440 /* CustomPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 362DE4DF195A1CAD00EC0440 /* CustomPlayer.swift */; };
 		364CF88E1951E882009D1CBA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 364CF88D1951E882009D1CBA /* AppDelegate.swift */; };
 		364CF8901951E882009D1CBA /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 364CF88F1951E882009D1CBA /* GameScene.sks */; };
 		364CF8921951E882009D1CBA /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 364CF8911951E882009D1CBA /* GameScene.swift */; };
@@ -18,6 +16,8 @@
 		364CF8A51951E882009D1CBA /* GameProtoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 364CF8A41951E882009D1CBA /* GameProtoTests.swift */; };
 		367B62F0195470AB00276906 /* boss.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 367B62EF195470AB00276906 /* boss.atlas */; };
 		36B988A81953A33700466D63 /* player.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 36B988A71953A33700466D63 /* player.atlas */; };
+		36CBF13E195B41C40025ED00 /* CustomPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36CBF13D195B41C40025ED00 /* CustomPlayer.swift */; };
+		36CBF13F195B41C40025ED00 /* CustomPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36CBF13D195B41C40025ED00 /* CustomPlayer.swift */; };
 		36F2F2A51953B1EE007E074A /* landscape.png in Resources */ = {isa = PBXBuildFile; fileRef = 36F2F2A41953B1EE007E074A /* landscape.png */; };
 /* End PBXBuildFile section */
 
@@ -32,7 +32,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		362DE4DF195A1CAD00EC0440 /* CustomPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CustomPlayer.swift; path = ../../../../../Documents/CustomPlayer.swift; sourceTree = "<group>"; };
 		364CF8881951E882009D1CBA /* GameProto.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GameProto.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		364CF88C1951E882009D1CBA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		364CF88D1951E882009D1CBA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -46,6 +45,7 @@
 		364CF8A41951E882009D1CBA /* GameProtoTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameProtoTests.swift; sourceTree = "<group>"; };
 		367B62EF195470AB00276906 /* boss.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = boss.atlas; sourceTree = "<group>"; };
 		36B988A71953A33700466D63 /* player.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = player.atlas; sourceTree = "<group>"; };
+		36CBF13D195B41C40025ED00 /* CustomPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CustomPlayer.swift; path = Model/CustomPlayer.swift; sourceTree = SOURCE_ROOT; };
 		36F2F2A41953B1EE007E074A /* landscape.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = landscape.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -70,7 +70,7 @@
 		362DE4DC195A1C7700EC0440 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				362DE4DF195A1CAD00EC0440 /* CustomPlayer.swift */,
+				36CBF13D195B41C40025ED00 /* CustomPlayer.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -257,9 +257,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				364CF8921951E882009D1CBA /* GameScene.swift in Sources */,
-				362DE4E0195A1CAD00EC0440 /* CustomPlayer.swift in Sources */,
 				364CF8941951E882009D1CBA /* GameViewController.swift in Sources */,
 				364CF88E1951E882009D1CBA /* AppDelegate.swift in Sources */,
+				36CBF13E195B41C40025ED00 /* CustomPlayer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -268,7 +268,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				364CF8A51951E882009D1CBA /* GameProtoTests.swift in Sources */,
-				362DE4E1195A1CAD00EC0440 /* CustomPlayer.swift in Sources */,
+				36CBF13F195B41C40025ED00 /* CustomPlayer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

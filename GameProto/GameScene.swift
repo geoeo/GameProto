@@ -161,6 +161,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
   //TODO stabilize player if jumping
     override func update(currentTime: CFTimeInterval) {
         /* Called before each frame is rendered */
+//      if(playerNode!.isJumping){
+//          playerNode!.stabilize(self.frame.size)
+//      }
+    
+        
+      
       
       
     }
