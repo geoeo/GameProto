@@ -82,6 +82,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
           = SKPhysicsBody(polygonFromPath: verteciesOfPlayer)
         playerNode!.physicsBody.allowsRotation = false
         
+        playerNode!.physicsBody.usesPreciseCollisionDetection = true
         playerNode!.physicsBody.categoryBitMask = playerCategory
         playerNode!.physicsBody.collisionBitMask = worldCategory | bossCategory
         
@@ -116,14 +117,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
       }
     }
   
-  //TODO Make movement speed constant
-  //TODO test movement with rotation actions
   func goTo(newLocation: CGPoint) {
     
       println(newLocation)
     
       let movePlayerAlongXPlane: SKAction = SKAction.moveToX(newLocation.x, duration: movementDuration)
-//      let setIdleTexture: SKAction = SKAction.setTexture(playerMoves[1])
       let rotatePlayerBack: SKAction = SKAction.rotateToAngle(0, duration: rotationDuration)
     
       var swapTexture: SKAction? = nil
@@ -131,13 +129,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
    
       if (newLocation.x < playerNode?.position.x) {
         // go left
-//        swapTexture = SKAction.setTexture(playerMoves[0])
         rotatePlayer = SKAction.rotateByAngle(playerNode!.angleOfRotation, duration: rotationDuration)
         println("go Left")
         
       } else {
         // go right
-//        swapTexture = SKAction.setTexture(playerMoves[2])
         rotatePlayer = SKAction.rotateByAngle(-playerNode!.angleOfRotation, duration: rotationDuration)
         println("go Right")
       }
@@ -202,6 +198,24 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
       if ( contact.bodyA.categoryBitMask & worldCategory ) == worldCategory {
         playerNode!.isJumping = false
       }
+    }
+    if(contact.bodyB.categoryBitMask & bossCategory ) == bossCategory{
+      playerNode?.removeAllActions()
+      
+      let rotatePlayerBack: SKAction = SKAction.rotateToAngle(0, duration: NSTimeInterval(0.3))
+      if(playerNode?.position.x > bossNode?.position.x){
+        let moveBackAlongX: SKAction = SKAction.moveByX(15, y: 0, duration: NSTimeInterval(0.1))
+        playerNode?.runAction(SKAction.group([rotatePlayerBack,moveBackAlongX]))
+        playerNode?.physicsBody.applyImpulse(CGVectorMake(5, 35))
+        
+      } else if(playerNode?.position.x < bossNode?.position.x) {
+        let moveBackAlongX: SKAction = SKAction.moveByX(-15, y: 0, duration: NSTimeInterval(0.1))
+        playerNode?.runAction(SKAction.group([rotatePlayerBack,moveBackAlongX]))
+        playerNode?.physicsBody.applyImpulse(CGVectorMake(-5, 35))
+      }
+      
+      
+    
     }
   }
 
