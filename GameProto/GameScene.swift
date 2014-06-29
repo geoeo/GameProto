@@ -15,7 +15,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
   // contains components used in gameplay
   let _actionLayer: SKNode = SKNode()
   
-  let rotationDuration: NSTimeInterval = 0.5
+  let rotationDuration: NSTimeInterval = 0.1
   let movementDuration: NSTimeInterval = 2
   
   let playerCategory: UInt32 = 1
@@ -121,7 +121,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
       println(newLocation)
     
-      let movePlayerAlongXPlane: SKAction = SKAction.moveToX(newLocation.x, duration: movementDuration)
+      let distanceToTravel: CGFloat = (2*fabsf(newLocation.x - self.playerNode!.position.x))/self.frame.width
+      let movePlayerAlongXPlane: SKAction = SKAction.moveToX(newLocation.x, duration: NSTimeInterval(distanceToTravel))
       let rotatePlayerBack: SKAction = SKAction.rotateToAngle(0, duration: rotationDuration)
     
       var swapTexture: SKAction? = nil
@@ -130,17 +131,19 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
       if (newLocation.x < playerNode?.position.x) {
         // go left
         rotatePlayer = SKAction.rotateByAngle(playerNode!.angleOfRotation, duration: rotationDuration)
+        playerNode?.setOrientationToLeft()
         println("go Left")
         
       } else {
         // go right
         rotatePlayer = SKAction.rotateByAngle(-playerNode!.angleOfRotation, duration: rotationDuration)
+        playerNode?.setOrientationToRight()
         println("go Right")
       }
     
-    if let movementAction = rotatePlayer {
-      let sequence = SKAction.sequence([movementAction,movePlayerAlongXPlane,rotatePlayerBack])
-      playerNode?.runAction(sequence)
+    if let rotationAction = rotatePlayer {
+      let sequence = SKAction.sequence([SKAction.group([rotationAction,movePlayerAlongXPlane]),rotatePlayerBack])
+      playerNode?.runAction(sequence, withKey: "playerMovement")
     } else {
       println("error in new location action")
     }
@@ -163,6 +166,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
   
     override func update(currentTime: CFTimeInterval) {
         /* Called before each frame is rendered */
+      
 
       
     
@@ -183,6 +187,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         playerNode?.physicsBody.applyImpulse(CGVectorMake(0, 200))
         if let player = playerNode {
           player.isJumping = true;
+//          playerNode?.doJumpRotation()
+          
         }
         
       default:
