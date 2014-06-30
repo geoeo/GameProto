@@ -15,6 +15,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
   // contains components used in gameplay
   let _actionLayer: SKNode = SKNode()
   
+  let enlargeFrameByPoints: CGFloat = 100;
+  
   let rotationDuration: NSTimeInterval = 0.1
   let movementDuration: NSTimeInterval = 2
   
@@ -22,17 +24,24 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
   let worldCategory: UInt32 = 1 << 1
   let bossCategory: UInt32 = 1 << 2
   
-  var playerNode: CustomPlayer?
-  var bossNode:SKSpriteNode?
+  var playerNode: CustomPlayer? = nil
+  var bossNode:SKSpriteNode? = nil
+  var blade:Blade? = nil
+  var bladeDelta: CGPoint = CGPointZero
+  
   let playerMoves: SKTexture?[] = Array<SKTexture?>(count: 3, repeatedValue: nil)
   let bossMoves: SKTexture?[] = Array<SKTexture?>(count: 3, repeatedValue: nil)
   
     override func didMoveToView(view: SKView) {
       
-      println("width: \(self.frame.width) height: \(self.frame.height)")
+      var frame: CGRect = self.frame;
+      frame.origin.x -= enlargeFrameByPoints;
+      frame.size.width += enlargeFrameByPoints * 2.0;
+      
+      println("width: \(frame.width) height: \(frame.height)")
       
         /* Setup your scene here */
-      self.physicsBody = SKPhysicsBody(edgeLoopFromRect: self.frame)
+      self.physicsBody = SKPhysicsBody(edgeLoopFromRect: frame)
       self.physicsBody.categoryBitMask = worldCategory
       self.physicsBody.contactTestBitMask = playerCategory
       self.physicsWorld.contactDelegate = self
@@ -103,7 +112,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
       } else {
           println("Boss node could not be created")
       }
-      
+    
       println("didMoveToView - complete")
     
   }
@@ -118,11 +127,20 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
   
   func goTo(newLocation: CGPoint) {
+  
+      var location = newLocation
     
       println(newLocation)
     
-      let distanceToTravel: CGFloat = (2*fabsf(newLocation.x - self.playerNode!.position.x))/self.frame.width
-      let movePlayerAlongXPlane: SKAction = SKAction.moveToX(newLocation.x, duration: NSTimeInterval(distanceToTravel))
+      // limit the x range the player node can travel
+      if(newLocation.x < 0){
+        location = CGPointMake(0, newLocation.y)
+      } else if(newLocation.x > self.frame.width ){
+        location = CGPointMake(self.frame.width, newLocation.y)
+      }
+    
+      let distanceToTravel: CGFloat = (2*fabsf(location.x - self.playerNode!.position.x))/self.frame.width
+      let movePlayerAlongXPlane: SKAction = SKAction.moveToX(location.x, duration: NSTimeInterval(distanceToTravel))
       let rotatePlayerBack: SKAction = SKAction.rotateToAngle(0, duration: rotationDuration)
     
       var swapTexture: SKAction? = nil
@@ -159,20 +177,51 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             let location = touch.locationInNode(self)
           
             goTo(location)
+            presentBladeAt(location)
           
 
         }
     }
   
+        // delta value will help us later to properly update our blade position,
+    // We calculate the diference between currentPoint and previousPosition and store that value in delta
+    override func touchesMoved(touches: NSSet!, withEvent event: UIEvent!)
+    {
+        let currentPoint:CGPoint = touches.anyObject().locationInNode(self)
+        let previousPoint:CGPoint = touches.anyObject().previousLocationInNode(self)
+        
+        bladeDelta = CGPointMake(currentPoint.x - previousPoint.x, currentPoint.y - previousPoint.y)
+    }
+    
+    // Remove the Blade if the touches have been cancelled or ended
+    override func touchesEnded(touches: NSSet!, withEvent event: UIEvent!)
+    {
+        removeBlade()
+    }
+    
+    override func touchesCancelled(touches: NSSet!, withEvent event: UIEvent!)
+    {
+        removeBlade()
+    }
+  
     override func update(currentTime: CFTimeInterval) {
         /* Called before each frame is rendered */
       
-
+        // Add some bounce to out of bounds x coordinates
+        if(playerNode!.position.x <= 10){
+          playerNode?.physicsBody.applyImpulse(CGVectorMake(5, 15))
+        } else if (playerNode!.position.x >= self.frame.width-10) {
+          playerNode?.physicsBody.applyImpulse(CGVectorMake(-5, 15))
+        }
       
-    
+        // Here we add the delta value to our blade position
+        if let actualBlade = blade {
+          actualBlade.position = CGPointMake(actualBlade.position.x + bladeDelta.x, actualBlade.position.y + bladeDelta.y)
+        }
         
-      
-      
+        // it's important to reset delta at this point,
+        // we are telling our blade to only update his position when touchesMoved is called
+        bladeDelta = CGPointZero
       
     }
   
@@ -200,8 +249,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
   }
   
   func didBeginContact(contact: SKPhysicsContact) {
-    if playerNode!.isJumping {
-      if ( contact.bodyA.categoryBitMask & worldCategory ) == worldCategory {
+   if ( contact.bodyA.categoryBitMask & worldCategory ) == worldCategory {
+//      println("collsion")
+      if playerNode!.isJumping {
         playerNode!.isJumping = false
       }
     }
@@ -219,10 +269,21 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         playerNode?.runAction(SKAction.group([rotatePlayerBack,moveBackAlongX]))
         playerNode?.physicsBody.applyImpulse(CGVectorMake(-5, 35))
       }
-      
-      
-    
     }
+  }
+  
+  func presentBladeAt(position: CGPoint){
+  
+    self.blade = Blade(position: position, target: self, color: UIColor.whiteColor())
+    self.addChild(self.blade)
+  
+  }
+  
+  func removeBlade(){
+  
+    bladeDelta = CGPointZero
+    self.blade?.removeFromParent()
+    
   }
 
 

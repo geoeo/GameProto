@@ -15,6 +15,8 @@
 		364CF8991951E882009D1CBA /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 364CF8981951E882009D1CBA /* Images.xcassets */; };
 		364CF8A51951E882009D1CBA /* GameProtoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 364CF8A41951E882009D1CBA /* GameProtoTests.swift */; };
 		367B62F0195470AB00276906 /* boss.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 367B62EF195470AB00276906 /* boss.atlas */; };
+		36A991A21961DF88002798A8 /* spark.png in Resources */ = {isa = PBXBuildFile; fileRef = 36A991A11961DF88002798A8 /* spark.png */; };
+		36A991A41961E0E9002798A8 /* Blade.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36A991A31961E0E9002798A8 /* Blade.swift */; };
 		36B988A81953A33700466D63 /* player.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 36B988A71953A33700466D63 /* player.atlas */; };
 		36CBF13E195B41C40025ED00 /* CustomPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36CBF13D195B41C40025ED00 /* CustomPlayer.swift */; };
 		36CBF13F195B41C40025ED00 /* CustomPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36CBF13D195B41C40025ED00 /* CustomPlayer.swift */; };
@@ -44,6 +46,8 @@
 		364CF8A31951E882009D1CBA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		364CF8A41951E882009D1CBA /* GameProtoTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameProtoTests.swift; sourceTree = "<group>"; };
 		367B62EF195470AB00276906 /* boss.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = boss.atlas; sourceTree = "<group>"; };
+		36A991A11961DF88002798A8 /* spark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = spark.png; path = Assets/spark.png; sourceTree = SOURCE_ROOT; };
+		36A991A31961E0E9002798A8 /* Blade.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Blade.swift; path = Model/Blade.swift; sourceTree = SOURCE_ROOT; };
 		36B988A71953A33700466D63 /* player.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = player.atlas; sourceTree = "<group>"; };
 		36CBF13D195B41C40025ED00 /* CustomPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CustomPlayer.swift; path = Model/CustomPlayer.swift; sourceTree = SOURCE_ROOT; };
 		36F2F2A41953B1EE007E074A /* landscape.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = landscape.png; sourceTree = "<group>"; };
@@ -71,6 +75,7 @@
 			isa = PBXGroup;
 			children = (
 				36CBF13D195B41C40025ED00 /* CustomPlayer.swift */,
+				36A991A31961E0E9002798A8 /* Blade.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -138,6 +143,7 @@
 		364CF8B01951E8E0009D1CBA /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				36A991A11961DF88002798A8 /* spark.png */,
 				367B62EF195470AB00276906 /* boss.atlas */,
 				36F2F2A41953B1EE007E074A /* landscape.png */,
 				36B988A71953A33700466D63 /* player.atlas */,
@@ -236,6 +242,7 @@
 				367B62F0195470AB00276906 /* boss.atlas in Resources */,
 				36B988A81953A33700466D63 /* player.atlas in Resources */,
 				364CF8991951E882009D1CBA /* Images.xcassets in Resources */,
+				36A991A21961DF88002798A8 /* spark.png in Resources */,
 				364CF8901951E882009D1CBA /* GameScene.sks in Resources */,
 				364CF8971951E882009D1CBA /* Main.storyboard in Resources */,
 				36F2F2A51953B1EE007E074A /* landscape.png in Resources */,
@@ -260,6 +267,7 @@
 				364CF8941951E882009D1CBA /* GameViewController.swift in Sources */,
 				364CF88E1951E882009D1CBA /* AppDelegate.swift in Sources */,
 				36CBF13E195B41C40025ED00 /* CustomPlayer.swift in Sources */,
+				36A991A41961E0E9002798A8 /* Blade.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
