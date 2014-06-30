@@ -174,11 +174,23 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         /* Called when a touch begins */
         
         for touch: AnyObject in touches {
+          
             let location = touch.locationInNode(self)
+            let maybeNode: SKNode?  = self.nodeAtPoint(location)
           
-            goTo(location)
-            presentBladeAt(location)
-          
+              switch(maybeNode){
+              
+                case .None:
+                  println("do nothing")
+                case .Some(_):
+                if(maybeNode?.name == "boss"){
+                  println("touched boss")
+                  presentBladeAt(location)
+                } else {
+                  goTo(location)
+                }
+            
+            }
 
         }
     }
