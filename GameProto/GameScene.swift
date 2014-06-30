@@ -243,20 +243,21 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
       
       switch swipeGesture.direction {
         
-      case UISwipeGestureRecognizerDirection.Up:
-        println("Swipe Up")
-        playerNode?.physicsBody.applyImpulse(CGVectorMake(0, 200))
-        if let player = playerNode {
-          player.isJumping = true;
-//          playerNode?.doJumpRotation()
+        case UISwipeGestureRecognizerDirection.Up:
+          println("Swipe Up")
+          var xForce: CGFloat? = playerNode?.getHorizontalForce()
           
-        }
-        
-      default:
-        break
-        
-      }
+          playerNode?.physicsBody.applyImpulse(CGVectorMake(playerNode!.getHorizontalForce(), 200))
+          if let player = playerNode {
+            player.isJumping = true;
+  //          playerNode?.doJumpRotation()
+            
+          }
+          
+        default:
+          break
       
+      }
     }
   }
   

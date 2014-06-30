@@ -87,6 +87,22 @@ class CustomPlayer: SKSpriteNode {
   
   }
   
+  func getHorizontalForce() -> CGFloat {
+    var force: CGFloat? = nil
+    
+    switch(orentation){
+      
+      case .Left:
+        force = -50
+      case .Right:
+        force = 50
+      case .Neutral:
+        force = 0
+      }
+    
+      return force!
+  }
+  
   
   
   
