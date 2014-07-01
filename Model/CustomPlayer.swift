@@ -25,8 +25,8 @@ class CustomPlayer: SKSpriteNode {
   
   var orentation: Direction {
   
-    willSet(newDirection) {
-//      println("orentation: \(orentation)")
+    didSet(val) {
+//      println("orentation: \(isLeft())")
     }
   
   }
@@ -48,7 +48,16 @@ class CustomPlayer: SKSpriteNode {
     self.orentation = Direction.Left
   }
   
-    func setOrientationToRight(){
+  func isLeft() -> Bool{
+    return orentation == Direction.Left
+  }
+  
+  func isRight() -> Bool {
+    return orentation == Direction.Right
+  }
+  
+  
+  func setOrientationToRight(){
     self.orentation = Direction.Right
   }
   

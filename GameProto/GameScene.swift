@@ -16,6 +16,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
   let _actionLayer: SKNode = SKNode()
   
   let enlargeFrameByPoints: CGFloat = 100;
+  let jumpRotation: CGFloat = 5
   
   let rotationDuration: NSTimeInterval = 0.1
   let movementDuration: NSTimeInterval = 2
@@ -235,6 +236,31 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         // we are telling our blade to only update his position when touchesMoved is called
         bladeDelta = CGPointZero
       
+        if let actualPlayer = playerNode {
+          if(actualPlayer.isJumping){
+            
+            if(actualPlayer.position.y > 60){
+            
+              if(actualPlayer.isLeft()){
+                actualPlayer.zRotation+=jumpRotation
+              } else if (actualPlayer.isRight()){
+                actualPlayer.zRotation-=jumpRotation
+              }
+            
+            }
+            
+
+            
+            if(actualPlayer.position.y <= 100 && actualPlayer.physicsBody.velocity.dy < 0){
+              println("landing")
+              if(!actualPlayer.actionForKey("landing")){
+                actualPlayer.runAction(SKAction.rotateToAngle(0, duration: NSTimeInterval(0)), withKey: "landing")
+              }
+            }
+          }
+          
+        }
+      
     }
   
   func respondToSwipeGesture(gesture: UIGestureRecognizer){
@@ -247,11 +273,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
           println("Swipe Up")
           var xForce: CGFloat? = playerNode?.getHorizontalForce()
           
-          playerNode?.physicsBody.applyImpulse(CGVectorMake(playerNode!.getHorizontalForce(), 200))
+          playerNode?.physicsBody.applyImpulse(CGVectorMake(playerNode!.getHorizontalForce(), 175))
           if let player = playerNode {
             player.isJumping = true;
-  //          playerNode?.doJumpRotation()
-            
           }
           
         default:
