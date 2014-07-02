@@ -21,6 +21,15 @@ class CustomPlayer: SKSpriteNode {
   
   }
   
+  // Mutated in GameScene.RespondToSwipeGesture and GameScene.didContactBegin
+  var isLanding: Bool {
+  
+    willSet(newValue) {
+      println("landing: \(newValue)")
+    }
+  
+  }
+  
   enum Direction {case Left,Right,Neutral}
   
   var orentation: Direction {
@@ -33,13 +42,15 @@ class CustomPlayer: SKSpriteNode {
   
   init(texture: SKTexture!) {
     isJumping = false
-    orentation = Direction.Neutral
+    isLanding = false
+    orentation = Direction.Right
     super.init(texture: texture)
   }
   
   init(texture: SKTexture!, color: UIColor!, size: CGSize) {
     isJumping = false
-    orentation = Direction.Neutral
+    isLanding = false
+    orentation = Direction.Right
     super.init(texture: texture, color: color, size: size)
   }
 
@@ -64,36 +75,6 @@ class CustomPlayer: SKSpriteNode {
     // NOT USED FOR NOW
     func setOrientationToNeutral(){
     self.orentation = Direction.Neutral
-  }
-  
-  func doJumpRotation(){
-  
-    let playerMovement = self.actionForKey("playerMovement")
-//    self.removeActionForKey("playerMovement")
-  
-    switch(self.orentation){
-    
-    case .Left:
-      let rotation: SKAction = SKAction.rotateByAngle(oneDegree*360, duration: NSTimeInterval(1.5))
-      let setToZero:SKAction = SKAction.rotateToAngle(0, duration: NSTimeInterval(0.5))
-      self.removeActionForKey("rotatePlayerBack")
-      self.runAction(SKAction.sequence([rotation,setToZero]))
-    case .Right:
-      let rotation: SKAction = SKAction.rotateByAngle(-360*oneDegree, duration: NSTimeInterval(1.5))
-      let setToZero:SKAction = SKAction.rotateToAngle(-0, duration: NSTimeInterval(0.5))
-      self.removeActionForKey("rotatePlayerBack")
-      self.runAction(SKAction.sequence([rotation,setToZero]))
-    case .Neutral:
-      println("nothing")
-      
-    
-    self.runAction(playerMovement, withKey: "playerMovement")
-      
-    
-    }
-  
-    
-  
   }
   
   func getHorizontalForce() -> CGFloat {

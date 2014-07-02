@@ -50,9 +50,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
       self.addChild(_bgLayer)
       self.addChild(_actionLayer)
       
-      let swipeGesture = UISwipeGestureRecognizer(target: self, action: "respondToSwipeGesture:")
-      swipeGesture.direction = UISwipeGestureRecognizerDirection.Up
-      self.view.addGestureRecognizer(swipeGesture)
+      let swipeGestureUp = UISwipeGestureRecognizer(target: self, action: "respondToSwipeGesture:")
+      swipeGestureUp.direction = UISwipeGestureRecognizerDirection.Up
+      self.view.addGestureRecognizer(swipeGestureUp)
+      let swipeGestureDown = UISwipeGestureRecognizer(target: self, action: "respondToSwipeGesture:")
+      swipeGestureDown.direction = UISwipeGestureRecognizerDirection.Down
+      self.view.addGestureRecognizer(swipeGestureDown)
     
       let bgTexture: SKTexture? = SKTexture(imageNamed: "landscape")
       
@@ -130,6 +133,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
   func goTo(newLocation: CGPoint) {
   
       var location = newLocation
+      let playerPosition = playerNode?.position.x
     
       println(newLocation)
     
@@ -140,7 +144,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         location = CGPointMake(self.frame.width, newLocation.y)
       }
     
-      let distanceToTravel: CGFloat = (2*fabsf(location.x - self.playerNode!.position.x))/self.frame.width
+      let distanceToTravel: CGFloat = (2.0*fabsf(location.x - playerNode!.position.x))/self.frame.width
       let movePlayerAlongXPlane: SKAction = SKAction.moveToX(location.x, duration: NSTimeInterval(distanceToTravel))
       let rotatePlayerBack: SKAction = SKAction.rotateToAngle(0, duration: rotationDuration)
     
@@ -237,7 +241,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         bladeDelta = CGPointZero
       
         if let actualPlayer = playerNode {
-          if(actualPlayer.isJumping){
+          if(actualPlayer.isJumping && !actualPlayer.isLanding){
             
             if(actualPlayer.position.y > 60){
             
@@ -248,8 +252,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
               }
             
             }
-            
-
             
             if(actualPlayer.position.y <= 100 && actualPlayer.physicsBody.velocity.dy < 0){
               println("landing")
@@ -277,6 +279,18 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
           if let player = playerNode {
             player.isJumping = true;
           }
+        case UISwipeGestureRecognizerDirection.Down:
+          println("Swipe Down")
+          if let player = playerNode? {
+            if(player.isJumping){
+              player.isLanding = true
+              player.physicsBody.applyImpulse(CGVector(0,-150))
+              if(!player.actionForKey("landing")){
+                player.runAction(SKAction.rotateToAngle(0, duration: NSTimeInterval(0)), withKey: "landing")
+              }
+            
+            }
+          }
           
         default:
           break
@@ -290,6 +304,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 //      println("collsion")
       if playerNode!.isJumping {
         playerNode!.isJumping = false
+        playerNode!.isLanding = false
       }
     }
     if(contact.bodyB.categoryBitMask & bossCategory ) == bossCategory{
