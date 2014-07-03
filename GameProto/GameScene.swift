@@ -144,7 +144,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         location = CGPointMake(self.frame.width, newLocation.y)
       }
     
-      let distanceToTravel: CGFloat = (2.0*fabsf(location.x - playerNode!.position.x))/self.frame.width
+      let distanceToTravel: CGFloat = CGFloat(2.0*fabsf(CFloat(location.x) - CFloat(self.playerNode!.position.x))) / self.frame.width
       let movePlayerAlongXPlane: SKAction = SKAction.moveToX(location.x, duration: NSTimeInterval(distanceToTravel))
       let rotatePlayerBack: SKAction = SKAction.rotateToAngle(0, duration: rotationDuration)
     
