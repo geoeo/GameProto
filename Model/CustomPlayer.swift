@@ -35,7 +35,7 @@ class CustomPlayer: SKSpriteNode {
   var orentation: Direction {
   
     didSet(val) {
-//      println("orentation: \(isLeft())")
+      println("orentation: \(isNeutral())")
     }
   
   }
@@ -67,6 +67,11 @@ class CustomPlayer: SKSpriteNode {
     return orentation == Direction.Right
   }
   
+  func isNeutral() -> Bool {
+    return orentation == Direction.Neutral
+  }
+  
+  
   
   func setOrientationToRight(){
     self.orentation = Direction.Right
@@ -87,7 +92,7 @@ class CustomPlayer: SKSpriteNode {
       case .Right:
         force = 50
       case .Neutral:
-        force = 0
+        println("keep same")
       }
     
       return force!

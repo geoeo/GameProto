@@ -129,51 +129,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         destinationList[i] = textureAtlas?.textureNamed("\(withEntityName)-0\(i+1)")
       }
     }
-  
-  func goTo(newLocation: CGPoint) {
-  
-      var location = newLocation
-      let playerPosition = playerNode?.position.x
-    
-      println(newLocation)
-    
-      // limit the x range the player node can travel
-      if(newLocation.x < 0){
-        location = CGPointMake(0, newLocation.y)
-      } else if(newLocation.x > self.frame.width ){
-        location = CGPointMake(self.frame.width, newLocation.y)
-      }
-    
-      let distanceToTravel: CGFloat = CGFloat(2.0*fabsf(CFloat(location.x) - CFloat(self.playerNode!.position.x))) / self.frame.width
-      let movePlayerAlongXPlane: SKAction = SKAction.moveToX(location.x, duration: NSTimeInterval(distanceToTravel))
-      let rotatePlayerBack: SKAction = SKAction.rotateToAngle(0, duration: rotationDuration)
-    
-      var swapTexture: SKAction? = nil
-      var rotatePlayer: SKAction? = nil
-   
-      if (newLocation.x < playerNode?.position.x) {
-        // go left
-        rotatePlayer = SKAction.rotateByAngle(playerNode!.angleOfRotation, duration: rotationDuration)
-        playerNode?.setOrientationToLeft()
-        println("go Left")
-        
-      } else {
-        // go right
-        rotatePlayer = SKAction.rotateByAngle(-playerNode!.angleOfRotation, duration: rotationDuration)
-        playerNode?.setOrientationToRight()
-        println("go Right")
-      }
-    
-    if let rotationAction = rotatePlayer {
-      let sequence = SKAction.sequence([SKAction.group([rotationAction,movePlayerAlongXPlane]),rotatePlayerBack])
-      playerNode?.runAction(sequence, withKey: "playerMovement")
-    } else {
-      println("error in new location action")
-    }
-
-    
-
-  }
 
     override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
         /* Called when a touch begins */
@@ -247,8 +202,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
           if(actualPlayer.isJumping && !actualPlayer.isLanding){
             
             if(actualPlayer.position.y > 60){
-            
-              if(actualPlayer.isLeft()){
+              
+              // TODO figure out what the jumping reaction for neutral should be
+              if(actualPlayer.isLeft() || actualPlayer.isNeutral()){
                 actualPlayer.zRotation+=jumpRotation
               } else if (actualPlayer.isRight()){
                 actualPlayer.zRotation-=jumpRotation
@@ -310,6 +266,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
       if playerNode!.isJumping {
         playerNode!.isJumping = false
         playerNode!.isLanding = false
+        playerNode!.setOrientationToNeutral()
       }
     }
     if(contact.bodyB.categoryBitMask & bossCategory ) == bossCategory{
@@ -341,6 +298,52 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     bladeDelta = CGPointZero
     self.blade?.removeFromParent()
     
+  }
+  
+  // TODO fix setting neutral when hitting object while action is running
+  func goTo(newLocation: CGPoint) {
+  
+      var location = newLocation
+      let playerPosition = playerNode?.position.x
+    
+      println(newLocation)
+    
+      // limit the x range the player node can travel
+      if(newLocation.x < 0){
+        location = CGPointMake(0, newLocation.y)
+      } else if(newLocation.x > self.frame.width ){
+        location = CGPointMake(self.frame.width, newLocation.y)
+      }
+    
+      let distanceToTravel: CGFloat = CGFloat(2.0*fabsf(CFloat(location.x) - CFloat(self.playerNode!.position.x))) / self.frame.width
+      let movePlayerAlongXPlane: SKAction = SKAction.moveToX(location.x, duration: NSTimeInterval(distanceToTravel))
+      let rotatePlayerBack: SKAction = SKAction.rotateToAngle(0, duration: rotationDuration)
+    
+      var swapTexture: SKAction? = nil
+      var rotatePlayer: SKAction? = nil
+   
+      if (newLocation.x < playerNode?.position.x) {
+        // go left
+        rotatePlayer = SKAction.rotateByAngle(playerNode!.angleOfRotation, duration: rotationDuration)
+        playerNode?.setOrientationToLeft()
+        println("go Left")
+        
+      } else {
+        // go right
+        rotatePlayer = SKAction.rotateByAngle(-playerNode!.angleOfRotation, duration: rotationDuration)
+        playerNode?.setOrientationToRight()
+        println("go Right")
+      }
+    
+    if let rotationAction = rotatePlayer {
+      let sequence = SKAction.sequence([SKAction.group([rotationAction,movePlayerAlongXPlane]),rotatePlayerBack,SKAction.runBlock({self.playerNode!.setOrientationToNeutral()})])
+      playerNode?.runAction(sequence, withKey: "playerMovement")
+    } else {
+      println("error in new location action")
+    }
+
+    
+
   }
 
 
