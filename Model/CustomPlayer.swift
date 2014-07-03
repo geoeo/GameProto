@@ -93,6 +93,11 @@ class CustomPlayer: SKSpriteNode {
       return force!
   }
   
+  func removeHorizontalForce() {
+    let oldV = physicsBody.velocity
+    physicsBody.velocity = CGVectorMake(0,oldV.dy)
+  }
+  
   
   
   

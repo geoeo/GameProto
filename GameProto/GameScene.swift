@@ -188,11 +188,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 case .None:
                   println("do nothing")
                 case .Some(_):
+                println("touch")
                 if(maybeNode?.name == "boss"){
                   println("touched boss")
                   presentBladeAt(location)
-                } else {
+                } else if(!playerNode!.isJumping) {
                   goTo(location)
+                  
+
                 }
             
             }
@@ -284,7 +287,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
           if let player = playerNode? {
             if(player.isJumping){
               player.isLanding = true
+              player.removeHorizontalForce()
               player.physicsBody.applyImpulse(CGVector(0,-150))
+                            println(player.physicsBody.velocity.dx)
               if(!player.actionForKey("landing")){
                 player.runAction(SKAction.rotateToAngle(0, duration: NSTimeInterval(0)), withKey: "landing")
               }
