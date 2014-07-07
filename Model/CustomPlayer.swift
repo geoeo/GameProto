@@ -103,6 +103,32 @@ class CustomPlayer: SKSpriteNode {
     physicsBody.velocity = CGVectorMake(0,oldV.dy)
   }
   
+  func getAngleOfRotation(directionToGo : Direction) -> CGFloat {
+    var rotationAngle: CGFloat = 0;
+    
+    switch(self.orentation){
+      case .Left:
+        if(directionToGo == Direction.Right){
+          rotationAngle = 2*angleOfRotation
+        } else {
+          rotationAngle = angleOfRotation
+        }
+      
+      case .Right:
+        if(directionToGo == Direction.Left){
+          rotationAngle = 2*angleOfRotation
+        } else {
+          rotationAngle = angleOfRotation
+        }
+      
+      case .Neutral:
+        rotationAngle = angleOfRotation
+    
+    }
+    
+    return rotationAngle
+  }
+  
   
   
   

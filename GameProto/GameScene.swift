@@ -324,13 +324,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
    
       if (newLocation.x < playerNode?.position.x) {
         // go left
-        rotatePlayer = SKAction.rotateByAngle(playerNode!.angleOfRotation, duration: rotationDuration)
+        rotatePlayer = SKAction.rotateByAngle(playerNode!.getAngleOfRotation(CustomPlayer.Direction.Left), duration: rotationDuration)
         playerNode?.setOrientationToLeft()
         println("go Left")
         
       } else {
         // go right
-        rotatePlayer = SKAction.rotateByAngle(-playerNode!.angleOfRotation, duration: rotationDuration)
+        rotatePlayer = SKAction.rotateByAngle(-playerNode!.getAngleOfRotation(CustomPlayer.Direction.Right), duration: rotationDuration)
         playerNode?.setOrientationToRight()
         println("go Right")
       }
