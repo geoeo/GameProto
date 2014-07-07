@@ -56,6 +56,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
       let swipeGestureDown = UISwipeGestureRecognizer(target: self, action: "respondToSwipeGesture:")
       swipeGestureDown.direction = UISwipeGestureRecognizerDirection.Down
       self.view.addGestureRecognizer(swipeGestureDown)
+      let swipeGestureLeft = UISwipeGestureRecognizer(target: self, action: "respondToSwipeGesture:")
+      swipeGestureLeft.direction = UISwipeGestureRecognizerDirection.Left
+      self.view.addGestureRecognizer(swipeGestureLeft)
+      let swipeGestureRight = UISwipeGestureRecognizer(target: self, action: "respondToSwipeGesture:")
+      swipeGestureRight.direction = UISwipeGestureRecognizerDirection.Right
+      self.view.addGestureRecognizer(swipeGestureRight)
     
       let bgTexture: SKTexture? = SKTexture(imageNamed: "landscape")
       
@@ -158,7 +164,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
     }
   
-        // delta value will help us later to properly update our blade position,
+    // delta value will help us later to properly update our blade position,
     // We calculate the diference between currentPoint and previousPosition and store that value in delta
     override func touchesMoved(touches: NSSet!, withEvent event: UIEvent!)
     {
@@ -249,9 +255,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
               if(!player.actionForKey("landing")){
                 player.runAction(SKAction.rotateToAngle(0, duration: NSTimeInterval(0)), withKey: "landing")
               }
-            
             }
           }
+        
+        case UISwipeGestureRecognizerDirection.Left:
+          println("Swipe Left")
+        
+        case UISwipeGestureRecognizerDirection.Right:
+          println("Swipe Right")
           
         default:
           break
@@ -271,6 +282,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     if(contact.bodyB.categoryBitMask & bossCategory ) == bossCategory{
       playerNode?.removeAllActions()
+      playerNode?.setOrientationToNeutral()
       
       let rotatePlayerBack: SKAction = SKAction.rotateToAngle(0, duration: NSTimeInterval(0.3))
       if(playerNode?.position.x > bossNode?.position.x){
