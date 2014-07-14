@@ -152,7 +152,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 println("touch")
                 if(maybeNode?.name == "boss"){
                   println("touched boss")
-                  presentBladeAt(location)
                 } else if(!playerNode!.isJumping) {
                   goTo(location)
                   
@@ -168,21 +167,21 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     // We calculate the diference between currentPoint and previousPosition and store that value in delta
     override func touchesMoved(touches: NSSet!, withEvent event: UIEvent!)
     {
-        let currentPoint:CGPoint = touches.anyObject().locationInNode(self)
-        let previousPoint:CGPoint = touches.anyObject().previousLocationInNode(self)
-        
-        bladeDelta = CGPointMake(currentPoint.x - previousPoint.x, currentPoint.y - previousPoint.y)
+//        let currentPoint:CGPoint = touches.anyObject().locationInNode(self)
+//        let previousPoint:CGPoint = touches.anyObject().previousLocationInNode(self)
+//        
+//        bladeDelta = CGPointMake(currentPoint.x - previousPoint.x, currentPoint.y - previousPoint.y)
     }
     
     // Remove the Blade if the touches have been cancelled or ended
     override func touchesEnded(touches: NSSet!, withEvent event: UIEvent!)
     {
-        removeBlade()
+//        removeBlade()
     }
     
     override func touchesCancelled(touches: NSSet!, withEvent event: UIEvent!)
     {
-        removeBlade()
+//        removeBlade()
     }
   
     override func update(currentTime: CFTimeInterval) {
@@ -197,7 +196,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
       
         // Here we add the delta value to our blade position
         if let actualBlade = blade {
-          actualBlade.position = CGPointMake(actualBlade.position.x + bladeDelta.x, actualBlade.position.y + bladeDelta.y)
+          actualBlade.position = CGPointMake(actualBlade.position.x, actualBlade.position.y - 50)
         }
         
         // it's important to reset delta at this point,
@@ -249,9 +248,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
           if let player = playerNode? {
             if(player.isJumping){
               player.isLanding = true
+              presentBladeAt(player.position)
               player.removeHorizontalForce()
               player.physicsBody.applyImpulse(CGVector(0,-150))
-                            println(player.physicsBody.velocity.dx)
+              println(player.physicsBody.velocity.dx)
               if(!player.actionForKey("landing")){
                 player.runAction(SKAction.rotateToAngle(0, duration: NSTimeInterval(0)), withKey: "landing")
               }
@@ -279,6 +279,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         playerNode!.isLanding = false
         playerNode!.setOrientationToNeutral()
       }
+      removeBlade()
     }
     if(contact.bodyB.categoryBitMask & bossCategory ) == bossCategory{
       playerNode?.removeAllActions()
@@ -295,6 +296,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         playerNode?.runAction(SKAction.group([rotatePlayerBack,moveBackAlongX]))
         playerNode?.physicsBody.applyImpulse(CGVectorMake(-5, 35))
       }
+      removeBlade()
     }
   }
   
@@ -302,6 +304,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
   
     self.blade = Blade(position: position, target: self, color: UIColor.whiteColor())
     self.addChild(self.blade)
+    println("present blade")
   
   }
   

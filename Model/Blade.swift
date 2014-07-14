@@ -46,7 +46,7 @@ class Blade: SKNode
         emitterNode.particleTexture = SKTexture(imageNamed: "spark.png")
         emitterNode.particleBirthRate = 3000
         
-        emitterNode.particleLifetime = 0.2
+        emitterNode.particleLifetime = 0.1
         emitterNode.particleLifetimeRange = 0
         
         emitterNode.particlePositionRange = CGVectorMake(0.0, 0.0)
@@ -58,7 +58,7 @@ class Blade: SKNode
         emitterNode.particleAlphaRange = 0.2
         emitterNode.particleAlphaSpeed = -0.45
         
-        emitterNode.particleScale = 0.5
+        emitterNode.particleScale = 1.5
         emitterNode.particleScaleRange = 0.001
         emitterNode.particleScaleSpeed = -1
         

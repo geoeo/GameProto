@@ -92,10 +92,18 @@ class CustomPlayer: SKSpriteNode {
       case .Right:
         force = 50
       case .Neutral:
-        println("keep same")
+        force = findFace()
       }
     
       return force!
+  }
+  
+  /**
+    * TODO: Implement permanent facing direction
+    * @return: return 50 force units in right direction
+    */
+  func findFace() -> CGFloat {
+    return 50
   }
   
   func removeHorizontalForce() {
