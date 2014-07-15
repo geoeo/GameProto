@@ -12,6 +12,7 @@ class CustomPlayer: SKSpriteNode {
 
   let oneDegree: CGFloat = CGFloat(M_PI) / 180
   let angleOfRotation: CGFloat = 30 * CGFloat(M_PI) / 180
+  var blade:Blade? = nil
   
   var isJumping: Bool {
   
@@ -135,6 +136,53 @@ class CustomPlayer: SKSpriteNode {
     }
     
     return rotationAngle
+  }
+  
+  //TODO enable multiple blades
+  func presentBladeAt(position: CGPoint,target:SKScene){
+  
+    self.blade = Blade(position: position, target: target, color: UIColor.whiteColor())
+    target.addChild(self.blade)
+    setBlade()
+    println("present blade")
+  
+  }
+  
+  //TODO enable multiple blades
+  // Set Blade direction
+  func setBlade() {
+    if let actualBlade = blade {
+      if(!actualBlade.dirtyFlag){
+        if(isJumping){
+          actualBlade.deltaY = -33
+          actualBlade.setDirty()
+        } else {
+          switch self.orentation {
+            case .Left:
+             actualBlade.deltaX = -20
+            case .Right:
+             actualBlade.deltaX = 20
+            case .Neutral:
+              println("do nothing") // fuck swifts switch statements
+          }
+          actualBlade.setDirty()
+        }
+      }
+    }
+
+  }
+  
+  func useBlade() {
+    if let actualBlade = blade {
+      actualBlade.position = CGPointMake(actualBlade.position.x + actualBlade.deltaX, actualBlade.position.y + actualBlade.deltaY)
+    }
+  }
+  
+  func removeBlade(){
+    self.blade?.removeFromParent()
+    println("Remove Blade")
+    
+    
   }
   
   

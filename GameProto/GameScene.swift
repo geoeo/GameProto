@@ -27,8 +27,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
   
   var playerNode: CustomPlayer? = nil
   var bossNode:SKSpriteNode? = nil
-  var blade:Blade? = nil
-  var bladeDelta: CGPoint = CGPointZero
   
   let playerMoves: SKTexture?[] = Array<SKTexture?>(count: 3, repeatedValue: nil)
   let bossMoves: SKTexture?[] = Array<SKTexture?>(count: 3, repeatedValue: nil)
@@ -194,14 +192,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
           playerNode?.physicsBody.applyImpulse(CGVectorMake(-5, 15))
         }
       
-        // Here we add the delta value to our blade position
-        if let actualBlade = blade {
-          actualBlade.position = CGPointMake(actualBlade.position.x, actualBlade.position.y - 50)
-        }
+        // create blade particle effect
+        playerNode?.useBlade()
         
         // it's important to reset delta at this point,
         // we are telling our blade to only update his position when touchesMoved is called
-        bladeDelta = CGPointZero
+//        bladeDelta = CGPointZero
       
         if let actualPlayer = playerNode {
           if(actualPlayer.isJumping && !actualPlayer.isLanding){
@@ -248,7 +244,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
           if let player = playerNode? {
             if(player.isJumping){
               player.isLanding = true
-              presentBladeAt(player.position)
+              player.presentBladeAt(player.position,target: self)
               player.removeHorizontalForce()
               player.physicsBody.applyImpulse(CGVector(0,-150))
               println(player.physicsBody.velocity.dx)
@@ -260,9 +256,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         case UISwipeGestureRecognizerDirection.Left:
           println("Swipe Left")
+          if let player = playerNode? {
+            player.presentBladeAt(player.position,target: self)
+          }
         
         case UISwipeGestureRecognizerDirection.Right:
           println("Swipe Right")
+          if let player = playerNode? {
+            player.presentBladeAt(player.position,target: self)
+          }
           
         default:
           break
@@ -278,8 +280,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         playerNode!.isJumping = false
         playerNode!.isLanding = false
         playerNode!.setOrientationToNeutral()
+        playerNode?.removeBlade()
       }
-      removeBlade()
     }
     if(contact.bodyB.categoryBitMask & bossCategory ) == bossCategory{
       playerNode?.removeAllActions()
@@ -296,23 +298,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         playerNode?.runAction(SKAction.group([rotatePlayerBack,moveBackAlongX]))
         playerNode?.physicsBody.applyImpulse(CGVectorMake(-5, 35))
       }
-      removeBlade()
+      playerNode?.removeBlade()
     }
-  }
-  
-  func presentBladeAt(position: CGPoint){
-  
-    self.blade = Blade(position: position, target: self, color: UIColor.whiteColor())
-    self.addChild(self.blade)
-    println("present blade")
-  
-  }
-  
-  func removeBlade(){
-  
-    bladeDelta = CGPointZero
-    self.blade?.removeFromParent()
-    
   }
   
   // TODO fix setting neutral when hitting object while action is running

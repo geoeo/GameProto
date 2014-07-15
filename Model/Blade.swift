@@ -11,6 +11,11 @@ import SpriteKit
 
 class Blade: SKNode
 {
+      
+    var deltaX: CGFloat = 0
+    var deltaY: CGFloat = 0
+    var dirtyFlag: Bool = false
+
     init(position:CGPoint, target:SKNode, color:UIColor)
     {
         super.init()
@@ -44,14 +49,14 @@ class Blade: SKNode
     {
         var emitterNode:SKEmitterNode = SKEmitterNode()
         emitterNode.particleTexture = SKTexture(imageNamed: "spark.png")
-        emitterNode.particleBirthRate = 3000
+        emitterNode.particleBirthRate = 1000
         
         emitterNode.particleLifetime = 0.1
-        emitterNode.particleLifetimeRange = 0
+        emitterNode.particleLifetimeRange = 0.0
         
         emitterNode.particlePositionRange = CGVectorMake(0.0, 0.0)
         
-        emitterNode.particleSpeed = 0.0
+        emitterNode.particleSpeed = 1.2
         emitterNode.particleSpeedRange = 0.0
         
         emitterNode.particleAlpha = 0.8
@@ -75,4 +80,6 @@ class Blade: SKNode
         
         return emitterNode
     }
+  
+    func setDirty() { dirtyFlag = true }
 }
