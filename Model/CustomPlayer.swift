@@ -155,7 +155,6 @@ class CustomPlayer: SKSpriteNode {
   
   }
   
-    // TODO fix setting neutral when hitting object while action is running
   func goTo(newLocation: CGPoint,frameWidth:CGFloat) {
   
       var location = newLocation
@@ -198,13 +197,11 @@ class CustomPlayer: SKSpriteNode {
 
   }
   
-  //TODO enable multiple blades
   func presentBladeAt(position: CGPoint,target:SKScene){
     bladeComponent?.presentBladeAt(position, target: target, player: self)
   }
   
 
-  // Set Blade direction
   func setBlade() {
     bladeComponent?.setBlade(self)
   }
