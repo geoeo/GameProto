@@ -16,10 +16,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
   let _actionLayer: SKNode = SKNode()
   
   let enlargeFrameByPoints: CGFloat = 100;
-  let jumpRotation: CGFloat = 5
-  
-  let rotationDuration: NSTimeInterval = 0.1
-  let movementDuration: NSTimeInterval = 2
   
   let playerCategory: UInt32 = 1
   let worldCategory: UInt32 = 1 << 1
@@ -150,10 +146,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 println("touch")
                 if(maybeNode?.name == "boss"){
                   println("touched boss")
-                } else if(!playerNode!.isJumping) {
-                  goTo(location)
-                  
-
+                } else if(playerNode?.isStanding()) {
+                  playerNode?.goTo(location,frameWidth: self.frame.width)
                 }
             
             }
@@ -170,7 +164,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 //        
 //        bladeDelta = CGPointMake(currentPoint.x - previousPoint.x, currentPoint.y - previousPoint.y)
     }
-    
+  
     // Remove the Blade if the touches have been cancelled or ended
     override func touchesEnded(touches: NSSet!, withEvent event: UIEvent!)
     {
@@ -194,36 +188,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
       
         // create blade particle effect
         playerNode?.useBlade()
-        
-        // it's important to reset delta at this point,
-        // we are telling our blade to only update his position when touchesMoved is called
-//        bladeDelta = CGPointZero
       
-        if let actualPlayer = playerNode {
-          if(actualPlayer.isJumping && !actualPlayer.isLanding){
-            
-            if(actualPlayer.position.y > 60){
-              
-              // TODO figure out what the jumping reaction for neutral should be
-              if(actualPlayer.isLeft() || actualPlayer.isNeutral()){
-                actualPlayer.zRotation+=jumpRotation
-              } else if (actualPlayer.isRight()){
-                actualPlayer.zRotation-=jumpRotation
-              }
-            
-            }
-            
-            if(actualPlayer.position.y <= 100 && actualPlayer.physicsBody.velocity.dy < 0){
-              println("landing")
-              if(!actualPlayer.actionForKey("landing")){
-                actualPlayer.runAction(SKAction.rotateToAngle(0, duration: NSTimeInterval(0)), withKey: "landing")
-              }
-            }
-          }
-          
-        }
+        // rotate player while jumping and other jumping specific actions
+        playerNode?.executeAnimationWhileJumping()
       
-    }
+  }
   
   func respondToSwipeGesture(gesture: UIGestureRecognizer){
     
@@ -237,13 +206,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
           
           playerNode?.physicsBody.applyImpulse(CGVectorMake(playerNode!.getHorizontalForce(), 175))
           if let player = playerNode {
-            player.isJumping = true;
+            player.state = CustomPlayer.State.Jumping
           }
         case UISwipeGestureRecognizerDirection.Down:
           println("Swipe Down")
           if let player = playerNode? {
-            if(player.isJumping){
-              player.isLanding = true
+            if(player.isJumping()){
+              player.state = CustomPlayer.State.Landing
               player.presentBladeAt(player.position,target: self)
               player.removeHorizontalForce()
               player.physicsBody.applyImpulse(CGVector(0,-150))
@@ -275,11 +244,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
   
   func didBeginContact(contact: SKPhysicsContact) {
    if ( contact.bodyA.categoryBitMask & worldCategory ) == worldCategory {
-//      println("collsion")
-      if playerNode!.isJumping {
-        playerNode!.isJumping = false
-        playerNode!.isLanding = false
-        playerNode!.setOrientationToNeutral()
+      if (playerNode?.isJumping() && !playerNode?.actionForKey("playerMovement")/* Collision may glitch, this extra check corrects this */) {
+        // Being lazy here, should unwrap optionals properly
+        playerNode!.state = CustomPlayer.State.Standing
+        playerNode?.setOrientationToNeutral()
         playerNode?.removeBlade()
       }
     }
@@ -298,54 +266,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         playerNode?.runAction(SKAction.group([rotatePlayerBack,moveBackAlongX]))
         playerNode?.physicsBody.applyImpulse(CGVectorMake(-5, 35))
       }
-      playerNode?.removeBlade()
+//      playerNode?.removeBlade()
     }
-  }
-  
-  // TODO fix setting neutral when hitting object while action is running
-  func goTo(newLocation: CGPoint) {
-  
-      var location = newLocation
-      let playerPosition = playerNode?.position.x
-    
-      println(newLocation)
-    
-      // limit the x range the player node can travel
-      if(newLocation.x < 0){
-        location = CGPointMake(0, newLocation.y)
-      } else if(newLocation.x > self.frame.width ){
-        location = CGPointMake(self.frame.width, newLocation.y)
-      }
-    
-      let distanceToTravel: CGFloat = CGFloat(2.0*fabsf(CFloat(location.x) - CFloat(self.playerNode!.position.x))) / self.frame.width
-      let movePlayerAlongXPlane: SKAction = SKAction.moveToX(location.x, duration: NSTimeInterval(distanceToTravel))
-      let rotatePlayerBack: SKAction = SKAction.rotateToAngle(0, duration: rotationDuration)
-    
-      var swapTexture: SKAction? = nil
-      var rotatePlayer: SKAction? = nil
-   
-      if (newLocation.x < playerNode?.position.x) {
-        // go left
-        rotatePlayer = SKAction.rotateByAngle(playerNode!.getAngleOfRotation(CustomPlayer.Direction.Left), duration: rotationDuration)
-        playerNode?.setOrientationToLeft()
-        println("go Left")
-        
-      } else {
-        // go right
-        rotatePlayer = SKAction.rotateByAngle(-playerNode!.getAngleOfRotation(CustomPlayer.Direction.Right), duration: rotationDuration)
-        playerNode?.setOrientationToRight()
-        println("go Right")
-      }
-    
-    if let rotationAction = rotatePlayer {
-      let sequence = SKAction.sequence([SKAction.group([rotationAction,movePlayerAlongXPlane]),rotatePlayerBack,SKAction.runBlock({self.playerNode!.setOrientationToNeutral()})])
-      playerNode?.runAction(sequence, withKey: "playerMovement")
-    } else {
-      println("error in new location action")
-    }
-
-    
-
   }
 
 
