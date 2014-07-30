@@ -18,11 +18,10 @@
 		364F17B11988307800CCAE4E /* BladeComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 364F17AF1988307800CCAE4E /* BladeComponent.swift */; };
 		365F0D261965B60400571E09 /* spark.png in Resources */ = {isa = PBXBuildFile; fileRef = 365F0D251965B60400571E09 /* spark.png */; };
 		367B62F0195470AB00276906 /* boss.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 367B62EF195470AB00276906 /* boss.atlas */; };
+		369A2E90198955E300E8D9DA /* Blade.swift in Sources */ = {isa = PBXBuildFile; fileRef = 369A2E8F198955E300E8D9DA /* Blade.swift */; };
 		36B988A81953A33700466D63 /* player.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 36B988A71953A33700466D63 /* player.atlas */; };
 		36CBF13E195B41C40025ED00 /* CustomPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36CBF13D195B41C40025ED00 /* CustomPlayer.swift */; };
 		36CBF13F195B41C40025ED00 /* CustomPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36CBF13D195B41C40025ED00 /* CustomPlayer.swift */; };
-		36DD40D719884CB100983708 /* Blade.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36DD40D619884CB100983708 /* Blade.swift */; };
-		36DD40D819884CB100983708 /* Blade.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36DD40D619884CB100983708 /* Blade.swift */; };
 		36F2F2A51953B1EE007E074A /* landscape.png in Resources */ = {isa = PBXBuildFile; fileRef = 36F2F2A41953B1EE007E074A /* landscape.png */; };
 /* End PBXBuildFile section */
 
@@ -51,9 +50,9 @@
 		364F17AF1988307800CCAE4E /* BladeComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BladeComponent.swift; path = Model/BladeComponent.swift; sourceTree = SOURCE_ROOT; };
 		365F0D251965B60400571E09 /* spark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = spark.png; sourceTree = "<group>"; };
 		367B62EF195470AB00276906 /* boss.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = boss.atlas; sourceTree = "<group>"; };
+		369A2E8F198955E300E8D9DA /* Blade.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Blade.swift; sourceTree = SOURCE_ROOT; };
 		36B988A71953A33700466D63 /* player.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = player.atlas; sourceTree = "<group>"; };
 		36CBF13D195B41C40025ED00 /* CustomPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CustomPlayer.swift; path = Model/CustomPlayer.swift; sourceTree = SOURCE_ROOT; };
-		36DD40D619884CB100983708 /* Blade.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Blade.swift; sourceTree = "<group>"; };
 		36F2F2A41953B1EE007E074A /* landscape.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = landscape.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -79,7 +78,7 @@
 			isa = PBXGroup;
 			children = (
 				36CBF13D195B41C40025ED00 /* CustomPlayer.swift */,
-				364F17AF1988307800CCAE4E /* BladeComponent.swift */,
+				369A2E8F198955E300E8D9DA /* Blade.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -106,7 +105,7 @@
 		364CF88A1951E882009D1CBA /* GameProto */ = {
 			isa = PBXGroup;
 			children = (
-				36DD40D519884C5D00983708 /* Utils */,
+				36DD40D519884C5D00983708 /* Components */,
 				362DE4DC195A1C7700EC0440 /* Model */,
 				36B988A91953A79600466D63 /* iPad */,
 				364CF88D1951E882009D1CBA /* AppDelegate.swift */,
@@ -163,12 +162,12 @@
 			name = iPad;
 			sourceTree = "<group>";
 		};
-		36DD40D519884C5D00983708 /* Utils */ = {
+		36DD40D519884C5D00983708 /* Components */ = {
 			isa = PBXGroup;
 			children = (
-				36DD40D619884CB100983708 /* Blade.swift */,
+				364F17AF1988307800CCAE4E /* BladeComponent.swift */,
 			);
-			name = Utils;
+			name = Components;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -277,8 +276,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				364CF8921951E882009D1CBA /* GameScene.swift in Sources */,
-				36DD40D719884CB100983708 /* Blade.swift in Sources */,
 				364CF8941951E882009D1CBA /* GameViewController.swift in Sources */,
+				369A2E90198955E300E8D9DA /* Blade.swift in Sources */,
 				364F17B01988307800CCAE4E /* BladeComponent.swift in Sources */,
 				364CF88E1951E882009D1CBA /* AppDelegate.swift in Sources */,
 				36CBF13E195B41C40025ED00 /* CustomPlayer.swift in Sources */,
@@ -291,7 +290,6 @@
 			files = (
 				364CF8A51951E882009D1CBA /* GameProtoTests.swift in Sources */,
 				36CBF13F195B41C40025ED00 /* CustomPlayer.swift in Sources */,
-				36DD40D819884CB100983708 /* Blade.swift in Sources */,
 				364F17B11988307800CCAE4E /* BladeComponent.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
